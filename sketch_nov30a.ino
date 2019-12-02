@@ -34,8 +34,6 @@ bool continuous_move = false;
 
 Servo servo_motor;
 
-int distanceArr[181] = {};
-
 enum state {
   pause,
   freeMovement,
@@ -331,6 +329,7 @@ void signalDecoder() {
       LED_controller();
       break;
     case 0xFDA857: //key 5
+      initDistanceScan();
       carState = adv_freeMovement;
       break;
   }
@@ -422,14 +421,13 @@ int startScanDeg = servoInit - 40;
 int endScanDeg = servoInit + 40;
 int scanCounter = startScanDeg;
 bool scanTurnR = true;
-int scanInterval = 5;
+int scanInterval = 10;
 void distanceScan() {
   servo_motor.write(scanCounter);
   int d1 = readPing();
-  delay(30);
+  delay(40);
   int d2 = readPing();
   int diff = d2 - d1;
-  distanceArr[scanCounter] = d2;
   Serial.println("====================");
   Serial.println(scanCounter);  
   Serial.println(diff);
@@ -442,13 +440,14 @@ void distanceScan() {
     if (diff < 0 && d2 <= stopDistance) {
       int prevMeas = d2;
       int turnCounter = 0;
-      while (diff < 0) {
+      while (diff < 0 && d2 <= stopDistance) {
         ++turnCounter;
         turn(!(scanCounter < servoInit)); // bool left // if in left turn right
         delay(300);
         if (turnCounter > 6) {
           tooCloseTurn();
           initDistanceScan();
+          break;
         }
         d2 = readPing();
         diff = prevMeas - d2;
