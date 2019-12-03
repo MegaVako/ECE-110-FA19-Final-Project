@@ -1,20 +1,21 @@
 # ECE 110 FA19 final project
 
-By Simon Sun and ZiYin Han
+By Simon Sun and ZiYin Han @ UIUC
 
-Description: An Arduino based car controlled by IR remote. The car can perform different task and is easy to implement.
-
-
-Youtube demo link: https://youtu.be/gQVd2QcuH5s
-
-Key functinos
+**Description:** An Arduino based car controlled by IR remote. The car can perform different task and is easy to implement.
 
 
+**Youtube demo link:** https://youtu.be/gQVd2QcuH5s
 
-Schematic
+**Key functinos:**
+
+![key png](https://github.com/MegaVako/ECE-110-FA19-Final-Project/blob/master/remote_diagram.png)
 
 
+**Schematic:**
+
+![schem](https://github.com/MegaVako/ECE-110-FA19-Final-Project/blob/master/schem.png)
 
 Feel free to ask any questions. 
 
-Email: simon.yansun@gmail.com
+**Email:** simon.yansun@gmail.com
