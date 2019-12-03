@@ -205,7 +205,7 @@ int look(bool L) {
 
 int delay1 = 50; // in ms
 int stopDelayInterval = 500;
-int stopDistance = 30;
+int stopDistance = 25;
 void state_freeMovement() {
   distance = readPing();
   delay(delay1);
@@ -417,11 +417,12 @@ void LED_controller() {
   }
 }
 
-int startScanDeg = servoInit - 40;
-int endScanDeg = servoInit + 40;
+int startScanDeg = servoInit - 60;
+int endScanDeg = servoInit + 60;
 int scanCounter = startScanDeg;
 bool scanTurnR = true;
 int scanInterval = 10;
+int tooCloseDis = stopDistance + 10;
 void distanceScan() {
   servo_motor.write(scanCounter);
   int d1 = readPing();
@@ -437,21 +438,26 @@ void distanceScan() {
     tooCloseTurn();
     initDistanceScan();
   } else {
-    if (diff < 0 && d2 <= stopDistance) {
-      int prevMeas = d2;
+    if (diff < 0 || d2 <= tooCloseDis) {
       int turnCounter = 0;
-      while (diff < 0 && d2 <= stopDistance) {
+      while (diff < 0 && d2 <= tooCloseDis && d2 != allowedDistance && d1 != allowedDistance) {
+        Serial.println("turn turn" + turnCounter);
+        Serial.println(diff);
         ++turnCounter;
-        turn(!(scanCounter < servoInit)); // bool left // if in left turn right
-        delay(300);
-        if (turnCounter > 6) {
+        for (int i = 0; i < 12; i++) {
+          //Serial.println((scanCounter < servoInit));
+          turnPWMLR((scanCounter < servoInit)); // bool left // if in left turn right
+        }
+        delay(400);
+        if (turnCounter > 1) {
           tooCloseTurn();
           initDistanceScan();
           break;
         }
+        d1 = readPing();
+        delay(30);
         d2 = readPing();
-        diff = prevMeas - d2;
-        prevMeas = d2;
+        diff = d2 - d1;
       }
       initPWMLR();
     }
@@ -468,11 +474,11 @@ void distanceScan() {
 }
 void initDistanceScan() {
   scanCounter = startScanDeg;
+  initPWMLR();
   scanTurnR = true;
 }
 void state_adv_freeMovement() { // need to add to decode
   distanceScan();
-  delay(10);
   foward();
   continuous_move = true;
 }
