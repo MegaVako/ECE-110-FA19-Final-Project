@@ -2,7 +2,7 @@
 
 By Simon Sun and ZiYin Han @ UIUC
 
-Disclaimer: all the .cpp and .h files are not writen by us. We uses ***IRremote*** and ***NewPing*** libraries. The ***sketch_nov30a.ino*** file contains the actual Arduino code that we write.
+**Disclaimer:** all the .cpp and .h files are not writen by us. We use ***IRremote*** and ***NewPing*** libraries. The ***sketch_nov30a.ino*** file contains the actual Arduino code that we write.
 
 **Description:** An Arduino based car controlled by IR remote. The car can perform different task and is easy to implement.
 
